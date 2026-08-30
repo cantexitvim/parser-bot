@@ -1,17 +1,24 @@
 from datetime import UTC, datetime
-from sqlite3 import Connection
+
+from aiosqlite import Connection, Row
 
 
-def get_image_by_url(conn: Connection, url: str) -> tuple | None:
-    result = conn.execute("SELECT hash FROM images WHERE source_url = ?", (url,))
+async def get_image_by_url(conn: Connection, url: str) -> Row | None:
+    result = await conn.execute("SELECT hash FROM images WHERE source_url = ?", (url,))
 
-    return result.fetchone()
+    return await result.fetchone()
 
 
-def save_image(*, conn: Connection, url: str, hash: str) -> None:
+async def get_image_by_hash(conn: Connection, hash: str) -> Row | None:
+    result = await conn.execute("SELECT hash FROM images WHERE hash = ?", (hash,))
+
+    return await result.fetchone()
+
+
+async def save_image(*, conn: Connection, url: str, hash: str) -> None:
     created_at = str(datetime.now(UTC))
 
-    conn.execute(
+    await conn.execute(
         "INSERT INTO images(source_url, hash, created_at) VALUES(?, ?, ?)",
         (url, hash, created_at),
     )

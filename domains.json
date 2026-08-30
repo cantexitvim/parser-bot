@@ -1,0 +1,7 @@
+{
+	"get.foundation": {
+		"tag": "img",
+		"attribute": "src",
+		"class": "thumbnail"
+	}
+}

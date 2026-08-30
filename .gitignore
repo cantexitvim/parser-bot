@@ -1,8 +1,6 @@
 .env
 .venv
-services
 __pycache__
-page_urls
 parser.db
 
 
